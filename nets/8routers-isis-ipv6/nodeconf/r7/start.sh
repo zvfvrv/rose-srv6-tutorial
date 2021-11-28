@@ -3,8 +3,9 @@
 BASE_DIR=nodeconf
 NODE_NAME=r7
 FRR_PATH=/usr/lib/frr
-
-#enable IPv4 forwarding
+BASE_PATH=$BASE_DIR/$NODE_NAME
+OUTPUT_PATH=/tmp/nodes/$NODE_NAME
+#enable IPv6 forwarding
 #sysctl -w net.ipv4.ip_forward=1
 sysctl -w net.ipv6.conf.all.forwarding=1
 #disable reverse path filtering (needed for dynamic routing)
@@ -12,19 +13,20 @@ sysctl -w net.ipv6.conf.all.forwarding=1
 #sysctl -w net.ipv4.conf.default.rp_filter=0
 #the following for loop also disables all and default
 #for i in /proc/sys/net/ipv4/conf/*/rp_filter ; do
-#  echo 0 > $i 
+  #echo 0 > $i 
 #done
 
 
 echo "no service integrated-vtysh-config" >> /etc/frr/vtysh.conf
-chown frr:frrvty $BASE_DIR/$NODE_NAME
+chown frr:frrvty $BASE_PATH
+chown frr:frrvty $OUTPUT_PATH
 #chown quagga:quagga $BASE_DIR/$NODE_NAME
 
-$FRR_PATH/zebra -f "$PWD"/$BASE_DIR/$NODE_NAME/zebra.conf -d -z "$PWD"/$BASE_DIR/$NODE_NAME/zebra.sock -i "$PWD"/$BASE_DIR/$NODE_NAME/zebra.pid
+$FRR_PATH/zebra -f "$PWD"/$BASE_PATH/zebra.conf -d -z $OUTPUT_PATH/zebra.sock -i $OUTPUT_PATH/zebra.pid
 
 sleep 1
 
-$FRR_PATH/isisd -f "$PWD"/$BASE_DIR/$NODE_NAME/isisd.conf -d -z "$PWD"/$BASE_DIR/$NODE_NAME/zebra.sock -i "$PWD"/$BASE_DIR/$NODE_NAME/isisd.pid
+$FRR_PATH/isisd -f "$PWD"/$BASE_PATH/isisd.conf -d -z $OUTPUT_PATH/zebra.sock -i $OUTPUT_PATH/isisd.pid
 
 # enable Segment Routing for IPv6
 sysctl -w net.ipv6.conf.all.seg6_enabled=1

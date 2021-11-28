@@ -36,7 +36,7 @@ class BaseNode(Host):
     def __init__(self, name, *args, **kwargs):
         dirs = [PRIVDIR]
         Host.__init__(self, name, privateDirs=dirs, *args, **kwargs)
-        self.dir = "/tmp/%s" % name
+        self.dir = "/tmp/nodes/%s" % name
         self.nets = []
         if not os.path.exists(self.dir):
             os.makedirs(self.dir)
