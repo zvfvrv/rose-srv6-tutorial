@@ -5,8 +5,9 @@ NODE_NAME=r3
 FRR_PATH=/usr/lib/frr
 BASE_PATH=$BASE_DIR/$NODE_NAME
 OUTPUT_PATH=/tmp/nodes/$NODE_NAME
+#enable IPv4 forwarding
+sysctl -w net.ipv4.ip_forward=1
 #enable IPv6 forwarding
-#sysctl -w net.ipv4.ip_forward=1
 sysctl -w net.ipv6.conf.all.forwarding=1
 #disable reverse path filtering (needed for dynamic routing)
 #sysctl -w net.ipv4.conf.all.rp_filter=0
