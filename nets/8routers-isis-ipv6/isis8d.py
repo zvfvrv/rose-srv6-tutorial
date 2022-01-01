@@ -144,6 +144,7 @@ def create_topo(my_net):
     r7 = my_net.addHost(name='r7', cls=Router)
     r8 = my_net.addHost(name='r8', cls=Router)
 
+    gobgp = my_net.addHost(name='gobgp', cls=BaseNode)
     # note that if the interface names are not provided,
     # the order of adding link will determine the
     # naming of the interfaces (e.g. on r1: r1-eth0, r1-eth1, r1-eth2...)
@@ -194,7 +195,8 @@ def create_topo(my_net):
     add_link(my_net, h83, r8)
     # datacenters of r8
     add_link(my_net, hdc2, r8)
-
+    # gobgp of r3
+    add_link(my_net, gobgp, r3)
 
 def add_nodes_to_etc_hosts():
     # Get /etc/hosts
@@ -222,7 +224,7 @@ def stop_all():
     # Clean Mininet emulation environment
     os.system('sudo mn -c')
     # Kill all the started daemons
-    os.system('sudo killall zebra isisd')
+    os.system('sudo killall zebra isisd gobgpd')
 
 
 def extract_host_pid(dumpline):

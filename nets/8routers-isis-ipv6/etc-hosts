@@ -28,3 +28,6 @@ fd00:0:83::2    h83
 fcff:2:1::2     hdc1
 fcff:8:1::2     hdc2
 fcff:5:1::2     hdc3
+
+# goBGP
+fd00:0:34::2    gobgp
